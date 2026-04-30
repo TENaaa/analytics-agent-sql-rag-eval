@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Analytics Agent</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <h1>指标字典驱动的数据分析 Agent</h1>
+        <p>SQL RAG · 只读查询 · 图表 · 中文结论 · 自动评测</p>
+      </div>
+      <span class="badge">{{ llm_mode }}</span>
+    </header>
+    <main class="layout">
+      <section class="panel">
+        <h2>数据源</h2>
+        <div class="sources">
+          {% for source in sources %}
+          <div class="source {{ 'ok' if source.available else 'missing' }}">
+            <strong>{{ source.title }}</strong>
+            <span>{{ source.source_id }}</span>
+            <small>{{ '可用' if source.available else '缺少 SQLite' }}</small>
+          </div>
+          {% endfor %}
+        </div>
+        <h2>示例问题</h2>
+        <button data-q="哪个渠道毛利ROAS最高？">渠道毛利 ROAS</button>
+        <button data-q="搜索排序 treatment 对长尾 query 有提升吗？">长尾 query lift</button>
+        <button data-q="车主 App 个性化触达相比 control 购买率如何？">车主实验购买率</button>
+        <button data-q="用车权益项目最优先优化哪个根因？">方案优先级</button>
+      </section>
+      <section class="workspace">
+        <form id="ask-form">
+          <input id="question" value="哪个渠道毛利ROAS最高？" />
+          <button type="submit">运行分析</button>
+        </form>
+        <article id="answer" class="answer"></article>
+        <pre id="sql"></pre>
+        <div id="table"></div>
+      </section>
+    </main>
+    <script src="/static/app.js"></script>
+  </body>
+</html>
